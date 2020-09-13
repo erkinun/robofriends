@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import CardList from './components/CardList'
 import SearchBox from './components/SearchBox'
 import Scroll from './components/Scroll'
+import ErrorBoundary from './components/ErrorBoundary'
 
 export default () => {
   const [rbts, setRobots] = useState([])
@@ -30,7 +31,9 @@ export default () => {
       <h1>RoboFriends</h1>
       <SearchBox onSearch={onSearchChange} />
       <Scroll>
-        <CardList robots={filtered} />
+        <ErrorBoundary>
+          <CardList robots={filtered} />
+        </ErrorBoundary>
       </Scroll>
     </div>
   )
