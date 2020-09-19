@@ -8,6 +8,7 @@ import { setSearchField } from './store/search'
 
 export default () => {
   const robots = useSelector((state) => state.fetchRobotsReducer.robots)
+  const isPending = useSelector((state) => state.fetchRobotsReducer.isPending)
   const searchField = useSelector((state) => state.searchRobotsReducer.searchField)
   const dispatch = useDispatch()
 
@@ -20,6 +21,7 @@ export default () => {
       <SearchBox onSearch={(e) => dispatch(setSearchField(e.target.value))} searchField={searchField} />
       <Scroll>
         <ErrorBoundary>
+          {isPending && <h2>Robots are coming!</h2>}
           <CardList robots={filtered} />
         </ErrorBoundary>
       </Scroll>

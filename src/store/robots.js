@@ -25,9 +25,15 @@ const initialState = {
 // TODO handle the error somewhere? in errors reducer maybe?
 export const fetchRobotsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case 'FETCH_ROBOTS_SUCCEEDED':
+    case FETCH_ROBOTS_PENDING:
+      return {
+        ...state,
+        isPending: true,
+      }
+    case FETCH_ROBOTS_SUCCEEDED:
       return {
         robots: action.payload,
+        isPending: false,
       }
     default:
       return state
@@ -45,6 +51,7 @@ export function* fetchRobots() {
 }
 
 export function* robotsSagas() {
+  yield put(fetchRobotsStart())
   yield call(fetchRobots)
   yield takeEvery(FETCH_ROBOTS_PENDING, fetchRobots)
 }
