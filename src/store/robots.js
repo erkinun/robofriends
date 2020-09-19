@@ -1,7 +1,8 @@
-import { takeEvery, put } from 'redux-saga/effects'
+import { takeEvery, put, call } from 'redux-saga/effects'
 
 const FETCH_ROBOTS_PENDING = 'FETCH_ROBOTS_PENDING'
 const FETCH_ROBOTS_SUCCEEDED = 'FETCH_ROBOTS_SUCCEEDED'
+const FETCH_ROBOTS_FAILED = 'FETCH_ROBOTS_FAILED'
 
 export const fetchRobotsStart = () => ({
   type: FETCH_ROBOTS_PENDING,
@@ -12,10 +13,16 @@ export const fetchRobotsSucceeded = (robots) => ({
   payload: robots,
 })
 
+const fetchRobotsFailed = (error) => ({
+  type: FETCH_ROBOTS_FAILED,
+  payload: error,
+})
+
 const initialState = {
   robots: [],
 }
 
+// TODO handle the error somewhere? in errors reducer maybe?
 export const fetchRobotsReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case 'FETCH_ROBOTS_SUCCEEDED':
@@ -29,14 +36,15 @@ export const fetchRobotsReducer = (state = initialState, action = {}) => {
 
 export function* fetchRobots() {
   try {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((users) => fetchRobotsSucceeded(users))
+    const result = yield fetch('https://jsonplaceholder.typicode.com/users')
+    const robots = yield result.json()
+    yield put(fetchRobotsSucceeded(robots))
   } catch (error) {
-    yield put({ type: 'FETCH_FAILED', error })
+    yield put(fetchRobotsFailed(error))
   }
 }
 
 export function* robotsSagas() {
-  yield takeEvery(FETCH_ROBOTS_PENDING, fetchRobots())
+  yield call(fetchRobots)
+  yield takeEvery(FETCH_ROBOTS_PENDING, fetchRobots)
 }
