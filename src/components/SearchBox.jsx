@@ -4,6 +4,7 @@ export default ({ onSearch, searchField }) => (
   <div>
     <p>You search for: {searchField}</p>
     <input
+      aria-label='Search Robots'
       onChange={onSearch}
       className='pa3 ba b--green bg-lightest-blue'
       type='search'
