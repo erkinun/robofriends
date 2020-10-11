@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import { createLogger } from 'redux-logger'
 import rootReducer from './store/reducers'
 import { robotsSagas } from './store/robots'
 import './index.css'
@@ -11,12 +10,19 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import 'tachyons'
 
-const logger = createLogger()
 const sagaMiddleware = createSagaMiddleware()
+
+const middlewares = [sagaMiddleware]
+
+if (process.env.NODE_ENV === `development`) {
+  const { logger } = require(`redux-logger`)
+
+  middlewares.push(logger)
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={createStore(rootReducer, applyMiddleware(logger, sagaMiddleware))}>
+    <Provider store={createStore(rootReducer, applyMiddleware(...middlewares))}>
       <App />
     </Provider>
   </React.StrictMode>,
