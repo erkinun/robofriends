@@ -1,6 +1,6 @@
 import React from 'react'
 
-const card = ({ id, name, username, email }) => {
+const Card = ({ id, name, username, email }) => {
   const url = `https://robohash.org/${id}`
   return (
     <div className='bg-light-green dib br3 pa3 ma2 grow bw2 shadow-5'>
@@ -13,4 +13,4 @@ const card = ({ id, name, username, email }) => {
   )
 }
 
-export default card
+export default Card

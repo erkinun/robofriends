@@ -5,8 +5,9 @@ import SearchBox from './components/SearchBox'
 import Scroll from './components/Scroll'
 import ErrorBoundary from './components/ErrorBoundary'
 import { setSearchField } from './store/search'
+import Header from './components/Header'
 
-export default () => {
+const App = () => {
   const robots = useSelector((state) => state.fetchRobotsReducer.robots)
   const isPending = useSelector((state) => state.fetchRobotsReducer.isPending)
   const searchField = useSelector((state) => state.searchRobotsReducer.searchField)
@@ -17,7 +18,7 @@ export default () => {
   // TODO might want to fix the two states by just saving the search field state
   return (
     <div className='tc'>
-      <h1>RoboFriends</h1>
+      <Header />
       <SearchBox onSearch={(e) => dispatch(setSearchField(e.target.value))} searchField={searchField} />
       <Scroll>
         <ErrorBoundary>
@@ -28,3 +29,5 @@ export default () => {
     </div>
   )
 }
+
+export default App
