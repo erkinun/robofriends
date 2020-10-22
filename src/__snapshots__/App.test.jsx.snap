@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> unit test or integration test? renders application 1`] = `ReactWrapper {}`;
